@@ -8,4 +8,7 @@ Style/WordArray:
   Enabled: false
 
 Metrics/BlockLength:
-  AllowedMethods: ['describe']
+  AllowedMethods: ['describe', 'configure']
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented

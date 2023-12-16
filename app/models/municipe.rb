@@ -1,6 +1,10 @@
 class Municipe < ApplicationRecord
   before_save :normalize_telefone
 
+  has_one_attached :foto do |img|
+    img.variant :thumb, resize_to_limit: [100, 100]
+  end
+
   validates :nome, com_sobrenome: { message: 'deve ter um sobrenome' }
   validates :cpf, cpf: true
   validates :cns, presence: true, cns: true
