@@ -12,3 +12,7 @@ Metrics/BlockLength:
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
+
+Metrics/MethodLength:
+  AllowedMethods:
+    - change
