@@ -3,3 +3,9 @@ Style/FrozenStringLiteralComment:
 
 Style/Documentation:
   Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Metrics/BlockLength:
+  AllowedMethods: ['describe']
