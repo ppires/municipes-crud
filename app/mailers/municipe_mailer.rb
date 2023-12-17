@@ -5,10 +5,10 @@ class MunicipeMailer < ApplicationMailer
     mail(to: @municipe.email, subject: 'Suas informações foram cadastradas')
   end
 
-  def registration_updated
+  def status_updated
     @municipe = params[:municipe]
-    @changes = params[:saved_changes].reject_keys('id', 'created_at', 'updated_at')
-    @attributes = @municipe.attributes.reject_keys('id', 'created_at', 'updated_at')
-    mail(to: @municipe.email, subject: 'Suas informações foram atualizadas')
+    municipe_ativo = params[:saved_changes].last
+    @action = municipe_ativo ? 'ativado' : 'desativado'
+    mail(to: @municipe.email, subject: "Seu cadastro foi #{@action}")
   end
 end

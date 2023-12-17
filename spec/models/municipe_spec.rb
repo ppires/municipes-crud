@@ -128,9 +128,16 @@ RSpec.describe Municipe, type: :model do
         end
       end
 
-      it 'deve adicionar um job para enviar um email sempre que um munícipe é atualizado' do
+      it 'deve adicionar um job para enviar um email sempre que o status de um munícipe é atualizado' do
         municipe = create(:municipe)
         assert_enqueued_with(job: ActionMailer::MailDeliveryJob) do
+          municipe.update(ativo: !municipe.ativo)
+        end
+      end
+
+      it 'não deve adicionar um job para enviar um email se o status de um munícipe não é atualizado' do
+        municipe = create(:municipe)
+        assert_no_enqueued_jobs do
           municipe.update(nome: Faker::Name.name)
         end
       end
@@ -143,9 +150,16 @@ RSpec.describe Municipe, type: :model do
         end
       end
 
-      it 'deve adicionar um job para enviar um sms sempre que um munícipe é atualizado' do
+      it 'deve adicionar um job para enviar um sms sempre que o status de um munícipe é atualizado' do
         municipe = create(:municipe)
         assert_enqueued_with(job: SendSmsJob) do
+          municipe.update(ativo: !municipe.ativo?)
+        end
+      end
+
+      it 'não deve adicionar um job para enviar um sms se o status de um munícipe não é atualizado' do
+        municipe = create(:municipe)
+        assert_no_enqueued_jobs do
           municipe.update(nome: Faker::Name.name)
         end
       end
