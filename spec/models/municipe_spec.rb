@@ -4,9 +4,12 @@ RSpec.describe Municipe, type: :model do
   describe 'validações' do
     describe 'nome' do
       it 'deve ser obrigatório' do
+        valid_name = Faker::Name.name
         [nil, '', ' '].each do |invalid_name|
           municipe = build(:municipe, nome: invalid_name)
           expect(municipe).not_to be_valid
+          municipe.nome = valid_name
+          expect(municipe).to be_valid
         end
       end
 
@@ -18,9 +21,12 @@ RSpec.describe Municipe, type: :model do
 
     describe 'CPF' do
       it 'deve ser obrigatório' do
+        valid_cpf = CPF.generate
         [nil, '', ' '].each do |invalid_cpf|
           municipe = build(:municipe, cpf: invalid_cpf)
           expect(municipe).not_to be_valid
+          municipe.cpf = valid_cpf
+          expect(municipe).to be_valid
         end
       end
 
@@ -34,9 +40,12 @@ RSpec.describe Municipe, type: :model do
 
     describe 'CNS' do
       it 'deve ser obrigatório' do
+        valid_cns = '213 2588 7050 0007'
         [nil, '', ' '].each do |invalid_cns|
           municipe = build(:municipe, cns: invalid_cns)
           expect(municipe).not_to be_valid
+          municipe.cns = valid_cns
+          expect(municipe).to be_valid
         end
       end
 
@@ -50,9 +59,12 @@ RSpec.describe Municipe, type: :model do
 
     describe 'email' do
       it 'deve ser obrigatório' do
+        valid_email = Faker::Internet.email(domain: 'example.com')
         [nil, '', ' '].each do |invalid_email|
           municipe = build(:municipe, email: invalid_email)
           expect(municipe).not_to be_valid
+          municipe.email = valid_email
+          expect(municipe).to be_valid
         end
       end
 
@@ -66,9 +78,12 @@ RSpec.describe Municipe, type: :model do
 
     describe 'data de nascimento' do
       it 'deve ser obrigatória' do
+        valid_data_nascimento = Date.current - 20.years
         [nil, ''].each do |invalid_data_nascimento|
           municipe = build(:municipe, data_nascimento: invalid_data_nascimento)
           expect(municipe).not_to be_valid
+          municipe.data_nascimento = valid_data_nascimento
+          expect(municipe).to be_valid
         end
       end
 
@@ -87,9 +102,12 @@ RSpec.describe Municipe, type: :model do
 
     describe 'telefone' do
       it 'deve ser obrigatório' do
+        valid_telefone = '+5511912345678'
         [nil, ''].each do |invalid_telefone|
           municipe = build(:municipe, telefone: invalid_telefone)
           expect(municipe).not_to be_valid
+          municipe.telefone = valid_telefone
+          expect(municipe).to be_valid
         end
       end
 
@@ -113,7 +131,27 @@ RSpec.describe Municipe, type: :model do
         [nil, ''].each do |invalid_ativo|
           municipe = build(:municipe, ativo: invalid_ativo)
           expect(municipe).not_to be_valid
+          municipe.ativo = false
+          expect(municipe).to be_valid
         end
+      end
+    end
+
+    describe 'endereço' do
+      it 'deve ser obrigatório' do
+        municipe = build(:municipe, endereco: nil)
+        expect(municipe).not_to be_valid
+        municipe.endereco = build(:endereco, :without_municipe)
+        expect(municipe).to be_valid
+      end
+    end
+
+    describe 'foto' do
+      it 'deve ser obrigatória' do
+        municipe = build(:municipe, foto: nil)
+        expect(municipe).not_to be_valid
+        municipe.foto = Rack::Test::UploadedFile.new('spec/fixtures/test.jpg', 'image/jpeg')
+        expect(municipe).to be_valid
       end
     end
   end
@@ -163,6 +201,14 @@ RSpec.describe Municipe, type: :model do
           municipe.update(nome: Faker::Name.name)
         end
       end
+    end
+  end
+
+  describe 'apagar registro' do
+    it 'deve apagar o endereço associado ao munícipe' do
+      municipe = build(:municipe)
+      expect { municipe.save }.to change { Municipe.count }.by(1).and change { Endereco.count }.by(1)
+      expect { municipe.destroy }.to change { Municipe.count }.by(-1).and change { Endereco.count }.by(-1)
     end
   end
 end

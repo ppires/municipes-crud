@@ -7,5 +7,9 @@ FactoryBot.define do
     bairro { 'Serra' }
     cidade { 'Belo Horizonte' }
     uf { 'MG' }
+    skip_create
+    trait :without_municipe do
+      association :municipe, strategy: :null
+    end
   end
 end

@@ -69,6 +69,15 @@ RSpec.describe Endereco, type: :model do
         end
       end
     end
+
+    describe 'municipe' do
+      it 'deve ser obrigatório' do
+        endereco = build(:endereco, :without_municipe)
+        expect(endereco).not_to be_valid
+        endereco = build(:endereco)
+        expect(endereco).to be_valid
+      end
+    end
   end
 
   describe 'transformações' do
