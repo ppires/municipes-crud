@@ -119,13 +119,36 @@ RSpec.describe Municipe, type: :model do
   end
 
   describe 'alterações no registro' do
-    it 'deve enviar um email sempre que um munícipe é criado' do
-      expect { create(:municipe) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    include ActiveJob::TestHelper
+
+    describe 'email' do
+      it 'deve adicionar um job para enviar um email sempre que um munícipe é criado' do
+        assert_enqueued_with(job: ActionMailer::MailDeliveryJob) do
+          create(:municipe)
+        end
+      end
+
+      it 'deve adicionar um job para enviar um email sempre que um munícipe é atualizado' do
+        municipe = create(:municipe)
+        assert_enqueued_with(job: ActionMailer::MailDeliveryJob) do
+          municipe.update(nome: Faker::Name.name)
+        end
+      end
     end
 
-    it 'deve enviar um email sempre que um munícipe é atualizado' do
-      municipe = create(:municipe)
-      expect { municipe.update(nome: Faker::Name.name) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    describe 'sms' do
+      it 'deve adicionar um job para enviar um sms sempre que um munícipe é criado' do
+        assert_enqueued_with(job: SendSmsJob) do
+          create(:municipe)
+        end
+      end
+
+      it 'deve adicionar um job para enviar um sms sempre que um munícipe é atualizado' do
+        municipe = create(:municipe)
+        assert_enqueued_with(job: SendSmsJob) do
+          municipe.update(nome: Faker::Name.name)
+        end
+      end
     end
   end
 end

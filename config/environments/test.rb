@@ -63,5 +63,5 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   # Execute jobs immediatelly
-  config.active_job.queue_adapter = :inline
+  config.active_job.queue_adapter = :test
 end

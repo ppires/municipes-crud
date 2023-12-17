@@ -74,3 +74,5 @@ gem 'cpf_cnpj', '~> 0.5.0'
 gem 'email_validator', '~> 2.2'
 
 gem 'phonelib', '~> 0.8.5'
+
+gem 'twilio-ruby', '~> 6.9.0'
