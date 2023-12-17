@@ -1,5 +1,7 @@
 class Municipe < ApplicationRecord
   before_save :normalize_telefone
+  after_create :send_new_registration_email
+  after_update :send_registration_updated_email
 
   has_one_attached :foto do |img|
     img.variant :thumb, resize_to_limit: [100, 100]
@@ -17,5 +19,13 @@ class Municipe < ApplicationRecord
 
   def normalize_telefone
     self.telefone = Phonelib.parse(telefone).full_e164.presence
+  end
+
+  def send_new_registration_email
+    MunicipeMailer.with(municipe: self).new_registration.deliver_later
+  end
+
+  def send_registration_updated_email
+    MunicipeMailer.with(municipe: self, saved_changes:).registration_updated.deliver_later
   end
 end

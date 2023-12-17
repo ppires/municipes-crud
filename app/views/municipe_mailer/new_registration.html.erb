@@ -1,0 +1,7 @@
+Olá <%= @municipe.nome %>.
+<br>
+<p>Foi feito um novo registro de munícipe em seu nome na plataforma Munícipe CRUD.</p>
+<p>Essas são as suas informações cadastradas na plataforma:</p>
+<% @attributes.each do |attribute, value| %>
+  <p><%= attribute %>: <%= value %></p>
+<% end %>

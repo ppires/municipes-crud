@@ -117,4 +117,15 @@ RSpec.describe Municipe, type: :model do
       end
     end
   end
+
+  describe 'alterações no registro' do
+    it 'deve enviar um email sempre que um munícipe é criado' do
+      expect { create(:municipe) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
+
+    it 'deve enviar um email sempre que um munícipe é atualizado' do
+      municipe = create(:municipe)
+      expect { municipe.update(nome: Faker::Name.name) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    end
+  end
 end
