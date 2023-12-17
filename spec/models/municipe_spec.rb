@@ -36,6 +36,15 @@ RSpec.describe Municipe, type: :model do
           expect(municipe).not_to be_valid
         end
       end
+
+      it 'deve ser único' do
+        cpf = CPF.generate
+        create(:municipe, cpf:)
+        municipe = build(:municipe, cpf:)
+        expect(municipe).not_to be_valid
+        municipe.cpf = CPF.generate
+        expect(municipe).to be_valid
+      end
     end
 
     describe 'CNS' do
@@ -54,6 +63,15 @@ RSpec.describe Municipe, type: :model do
           municipe = build(:municipe, cns: invalid_cns)
           expect(municipe).not_to be_valid
         end
+      end
+
+      it 'deve ser único' do
+        cns = CNS.generate
+        create(:municipe, cns:)
+        municipe = build(:municipe, cns:)
+        expect(municipe).not_to be_valid
+        municipe.cns = CNS.generate
+        expect(municipe).to be_valid
       end
     end
 

@@ -11,8 +11,8 @@ class Municipe < ApplicationRecord
   accepts_nested_attributes_for :endereco
 
   validates :nome, com_sobrenome: { message: 'deve ter um sobrenome' }
-  validates :cpf, cpf: true
-  validates :cns, presence: true, cns: true
+  validates :cpf, cpf: true, uniqueness: true
+  validates :cns, cns: true, uniqueness: true
   validates :email, email: { mode: :strict }
   validates :data_nascimento, presence: true, reasonable_age: true, birthday_in_the_past: true
   validates :telefone, phone: true
