@@ -11,6 +11,10 @@ class Endereco < ApplicationRecord
   validates :cidade, presence: true
   validates :uf, presence: true, length: { is: 2 }
 
+  def self.searchable_attributes
+    ['bairro', 'cep', 'cidade', 'codigo_ibge', 'complemento', 'logradouro', 'numero', 'uf']
+  end
+
   def formatted
     "#{logradouro} #{numero}#{complemento.present? ? " #{complemento}" : ''}, #{bairro}, #{cidade}-#{uf}"
   end

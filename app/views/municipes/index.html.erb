@@ -1,14 +1,69 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Municipes</h1>
-
-<div id="municipes">
-  <% @municipes.each do |municipe| %>
-    <%= render municipe %>
-    <p>
-      <%= link_to "Show this municipe", municipe %>
-    </p>
-  <% end %>
+<div class="row">
+  <div class="col-md">
+    <div>
+      <h1>Munícipes</h1>
+    </div>
+  </div>
+  <div class="col-md">
+    <%= link_to 'Cadastrar munícipe', new_municipe_path, class: 'btn btn-primary float-md-end' %>
+  </div>
 </div>
 
-<%= link_to "New municipe", new_municipe_path %>
+<%= form_tag municipes_path, method: :get do %>
+  <div class="row">
+    <div class="col-md-3">
+      <%= search_field_tag :query, params[:query], class: 'form-control', placeholder: 'Buscar munícipes...' %>
+    </div>
+    <div class="col-md">
+      <div class="form-check form-check-inline">
+        <%= radio_button_tag :ativos, 'ativos', radio_ativos_checked?('ativos', params[:ativos]), class: 'form-check-input', id: 'ativos_ativos' %>
+        <%= label_tag :ativos, 'ativos', class: 'form-check-label', for: 'ativos_ativos' %>
+      </div>
+      <div class="form-check form-check-inline">
+        <%= radio_button_tag :ativos, 'inativos', radio_ativos_checked?('inativos', params[:ativos]), class: 'form-check-input', id: 'ativos_inativos' %>
+        <%= label_tag :ativos, 'inativos', class: 'form-check-label', for: 'ativos_inativos' %>
+      </div>
+      <div class="form-check form-check-inline">
+        <%= radio_button_tag :ativos, 'todos', radio_ativos_checked?('todos', params[:ativos]), class: 'form-check-input', id: 'ativos_todos' %>
+        <%= label_tag :ativos, 'todos', class: 'form-check-label', for: 'ativos_todos' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div id="municipes">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Status</th>
+        <th scope="col">Nome</th>
+        <th scope="col">CPF</th>
+        <th scope="col">CNS</th>
+        <th scope="col">Email</th>
+        <th scope="col">Nascimento</th>
+        <th scope="col">Telefone</th>
+        <th scope="col">Endereço</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @municipes.each do |municipe| %>
+        <tr>
+          <th scope="row"><%= image_tag municipe.foto.variant(resize_to_limit: [50, 50]) %></th>
+          <td><%= municipe_ativo(municipe) %></td>
+          <td><%= municipe.nome %></td>
+          <td><%= municipe.formatted_cpf %></td>
+          <td><%= municipe.formatted_cns %></td>
+          <td><%= municipe.email %></td>
+          <td><%= data_nascimento(municipe) %></td>
+          <td><%= municipe.telefone %></td>
+          <td><%= municipe.formatted_endereco %></td>
+          <td><%= link_to 'Editar', edit_municipe_path(municipe) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

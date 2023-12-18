@@ -19,6 +19,21 @@ class Municipe < ApplicationRecord
   validates :ativo, inclusion: [true, false]
   validates :foto, presence: true
 
+  def self.searchable_attributes
+    column_names.map(&:to_sym).reject do |column|
+      [:id, :ativo, :created_at, :updated_at, :data_nascimento].include?(column)
+    end
+  end
+
+  def self.search(query)
+    return includes(:endereco) if query.blank?
+
+    municipe_conditions = searchable_attributes.map { |attribute| "#{attribute} ILIKE :query" }
+    endereco_conditions = Endereco.searchable_attributes.map { |attribute| "enderecos.#{attribute} ILIKE :query" }
+    conditions = municipe_conditions.concat(endereco_conditions).join(' OR ')
+    Municipe.joins(:endereco).includes(:endereco).where(conditions, query: "%#{query.strip}%")
+  end
+
   def formatted_cpf
     CPF.new(cpf).formatted
   end

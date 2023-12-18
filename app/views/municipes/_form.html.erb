@@ -11,42 +11,92 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :nome, style: "display: block" %>
-    <%= form.text_field :nome %>
+  <div class="form-check">
+    <%= form.check_box :ativo, class: "form-check-input" %>
+    <%= form.label :ativo, 'Ativo?', class: 'form-check-label' %>
   </div>
 
-  <div>
-    <%= form.label :cpf, style: "display: block" %>
-    <%= form.text_field :cpf %>
+  <div class="form-group">
+    <%= form.label :nome %>
+    <%= form.text_field :nome, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :cns, style: "display: block" %>
-    <%= form.text_field :cns %>
+  <div class="form-group">
+    <%= form.label :cpf, 'CPF' %>
+    <%= form.text_field :cpf, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :email, style: "display: block" %>
-    <%= form.text_field :email %>
+  <div class="form-group">
+    <%= form.label :cns, 'CNS' %>
+    <%= form.text_field :cns, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :data_nascimento, style: "display: block" %>
-    <%= form.date_field :data_nascimento %>
+  <div class="form-group">
+    <%= form.label :email %>
+    <%= form.text_field :email, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :telefone, style: "display: block" %>
-    <%= form.text_field :telefone %>
+  <div class="form-group">
+    <%= form.label :data_nascimento %>
+    <%= form.date_field :data_nascimento, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :ativo, style: "display: block" %>
-    <%= form.check_box :ativo %>
+  <div class="form-group">
+    <%= form.label :telefone %>
+    <%= form.text_field :telefone, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="custom-file">
+    <%= form.label :foto, class: "custom-file-label" %>
+    <%= form.file_field :foto, class: "custom-file-input" %>
+  </div>
+
+  <h3>Endereço</h3>
+
+  <%= form.fields_for(:endereco) do |form_endereco| %>
+    <div class="form-group">
+      <%= form_endereco.label :cep %>
+      <%= form_endereco.text_field :cep, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form_endereco.label :logradouro %>
+      <%= form_endereco.text_field :logradouro, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form_endereco.label :numero %>
+      <%= form_endereco.text_field :numero, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form_endereco.label :complemento %>
+      <%= form_endereco.text_field :complemento, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form_endereco.label :bairro %>
+      <%= form_endereco.text_field :bairro, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form_endereco.label :cidade %>
+      <%= form_endereco.text_field :cidade, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form_endereco.label :uf %>
+      <%= form_endereco.text_field :uf, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= form_endereco.label :codigo_ibge %>
+      <%= form_endereco.text_field :codigo_ibge, class: "form-control" %>
+    </div>
+  <% end %>
+
+  <div class="mt-3">
+    <%= button_tag 'Salvar', type: :submit, class: 'btn btn-primary' %>
+    <%= link_to 'Cancelar', municipes_path, class: 'btn btn-light' %>
   </div>
 <% end %>
