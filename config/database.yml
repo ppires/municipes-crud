@@ -83,5 +83,6 @@ test:
 production:
   <<: *default
   database: municipes_crud_production
-  username: municipes_crud
+  host: <%= ENV["MUNICIPES_CRUD_DATABASE_HOST"] %>
+  username: <%= ENV["MUNICIPES_CRUD_DATABASE_USER"] %>
   password: <%= ENV["MUNICIPES_CRUD_DATABASE_PASSWORD"] %>
