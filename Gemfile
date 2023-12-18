@@ -67,6 +67,12 @@ group :development do
   # gem 'spring'
 
   gem 'rubocop', '~> 1.59', require: false
+
+  gem 'capistrano', '~> 3.18', require: false
+  gem 'capistrano3-puma', '~> 6.0.beta.1'
+  gem 'capistrano-nvm', '~> 0.0.7', require: false
+  gem 'capistrano-rails', '~> 1.6', require: false
+  gem 'capistrano-rvm', '~> 0.1.2', require: false
 end
 
 gem 'cpf_cnpj', '~> 0.5.0'
