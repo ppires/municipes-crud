@@ -3,14 +3,13 @@ class MunicipesController < ApplicationController
 
   # GET /municipes or /municipes.json
   def index
-    @municipes = Municipe.search(params[:query], params[:ativos]).with_attached_foto
+    @municipes = Municipe.search(params[:query], params[:ativos]).with_attached_foto.page(params[:page])
   end
 
   # GET /municipes/new
   def new
     @municipe = Municipe.new
     @municipe.build_endereco
-    # @municipe = FactoryBot.build(:municipe)
   end
 
   # GET /municipes/1/edit

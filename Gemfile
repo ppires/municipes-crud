@@ -82,3 +82,5 @@ gem 'email_validator', '~> 2.2'
 gem 'phonelib', '~> 0.8.5'
 
 gem 'twilio-ruby', '~> 6.9.0'
+
+gem 'kaminari', '~> 1.2'

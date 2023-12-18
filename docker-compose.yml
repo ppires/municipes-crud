@@ -1,19 +1,6 @@
 version: '3.9'
 
 services:
-  app:
-    build: .
-    restart: always
-    ports:
-      - 3000:3000
-    volumes:
-      - ./dev/storage:/home/rails/storage
-    environment:
-      RAILS_MASTER_KEY: a9b48dfb13adf5db8fab84ca32053493
-      MUNICIPES_CRUD_DATABASE_HOST: db
-      MUNICIPES_CRUD_DATABASE_USER: postgres
-      MUNICIPES_CRUD_DATABASE_PASSWORD: postgres
-
   db:
     image: postgres
     restart: always
