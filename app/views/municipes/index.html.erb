@@ -59,11 +59,11 @@
     <tbody>
       <% @municipes.each do |municipe| %>
         <tr>
-          <th scope="row"><%= image_tag municipe.foto.variant(resize_to_limit: [50, 50]) %></th>
+          <td scope="row"><%= image_tag municipe.foto.variant(resize_to_limit: [50, 50]) %></td>
           <td><%= municipe_ativo(municipe) %></td>
           <td><%= municipe.nome %></td>
-          <td><%= municipe.formatted_cpf %></td>
-          <td><%= municipe.formatted_cns %></td>
+          <td><%= municipe.cpf %></td>
+          <td><%= municipe.cns %></td>
           <td><%= municipe.email %></td>
           <td><%= data_nascimento(municipe) %></td>
           <td><%= municipe.telefone %></td>

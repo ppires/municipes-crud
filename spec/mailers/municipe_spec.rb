@@ -24,9 +24,8 @@ RSpec.describe MunicipeMailer, type: :mailer do
   end
 
   describe 'status_updated' do
-    before(:all) do
-      create(:municipe, nome: 'Nome Inicial')
-    end
+    before(:all) { create(:municipe, nome: 'Nome Inicial') }
+    after(:all) { Municipe.destroy_all }
 
     let(:municipe) do
       municipe = Municipe.last

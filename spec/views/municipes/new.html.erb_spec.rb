@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'municipes/new', type: :view do
   before(:each) do
-    assign(:municipe, create(:municipe))
+    assign(:municipe, build(:municipe))
   end
 
-  xit 'renders new municipe form' do
+  it 'renders new municipe form' do
     render
 
     assert_select 'form[action=?][method=?]', municipes_path, 'post' do

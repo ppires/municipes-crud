@@ -23,12 +23,10 @@ class Municipe < ApplicationRecord
   scope :inativos, -> { where(ativo: false) }
 
   def self.searchable_attributes
-    column_names.map(&:to_sym).reject do |column|
-      [:id, :ativo, :created_at, :updated_at, :data_nascimento].include?(column)
-    end
+    ['nome', 'cpf', 'cns', 'email', 'telefone']
   end
 
-  def self.search(query, ativos_param)
+  def self.search(query, ativos_param = nil)
     search_result = filter_ativos_search(ativos_param)
     return search_result.includes(:endereco) if query.blank?
 
@@ -43,14 +41,6 @@ class Municipe < ApplicationRecord
     return inativos if param == 'inativos'
 
     unscoped
-  end
-
-  def formatted_cpf
-    CPF.new(cpf).formatted
-  end
-
-  def formatted_cns
-    cns.to_s.gsub(/[^\d]/, '').gsub(/\A(\d{3})(\d{4})(\d{4})(\d{4})\Z/, '\\1 \\2 \\3 \\4')
   end
 
   def formatted_endereco

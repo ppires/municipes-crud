@@ -229,4 +229,92 @@ RSpec.describe Municipe, type: :model do
       expect { municipe.destroy }.to change { Municipe.count }.by(-1).and change { Endereco.count }.by(-1)
     end
   end
+
+  describe 'busca de municipes' do
+    it 'deve ser possível buscar por nome' do
+      create(:municipe, nome: 'Nome 1')
+      create(:municipe, nome: 'Outro Nome')
+      expect(Municipe.search('Outro').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por cpf' do
+      create(:municipe, cpf: '073.463.416-19')
+      create(:municipe, cpf: '773.554.708-09')
+      expect(Municipe.search('554').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por cns' do
+      create(:municipe, cns: '192 9036 1257 0005')
+      create(:municipe, cns: '853 8663 1144 0002')
+      expect(Municipe.search('866').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por email' do
+      create(:municipe, email: 'joao@example.com')
+      create(:municipe, email: 'jose@gmail.com')
+      expect(Municipe.search('gmail').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por telefone' do
+      create(:municipe, telefone: '+55 31 91234-5678')
+      create(:municipe, telefone: '+351 912 987 654')
+      expect(Municipe.search('123').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por bairro do endereço' do
+      create :municipe, endereco: build(:endereco, bairro: 'Camargos')
+      create :municipe, endereco: build(:endereco, bairro: 'Savassi')
+      expect(Municipe.search('assi').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por cep do endereço' do
+      create :municipe, endereco: build(:endereco, cep: '12345678')
+      create :municipe, endereco: build(:endereco, cep: '98765432')
+      expect(Municipe.search('5678').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por cidade do endereço' do
+      create :municipe, endereco: build(:endereco, cidade: 'Belo Horizonte')
+      create :municipe, endereco: build(:endereco, cidade: 'Rio de Janeiro')
+      expect(Municipe.search('rio').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por codigo_ibge do endereço' do
+      create :municipe, endereco: build(:endereco, codigo_ibge: '0001234')
+      create :municipe, endereco: build(:endereco, codigo_ibge: '0005678')
+      expect(Municipe.search('123').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por complemento do endereço' do
+      create :municipe, endereco: build(:endereco, complemento: 'Apt 12')
+      create :municipe, endereco: build(:endereco, complemento: nil)
+      expect(Municipe.search('apt 12').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por logradouro do endereço' do
+      create :municipe, endereco: build(:endereco, logradouro: 'Rua iluminada')
+      create :municipe, endereco: build(:endereco, logradouro: 'Avenida movimentada')
+      expect(Municipe.search('rua').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por numero do endereço' do
+      create :municipe, endereco: build(:endereco, numero: '763')
+      create :municipe, endereco: build(:endereco, numero: 's/n')
+      expect(Municipe.search('s/n').count).to be >= 1
+    end
+
+    it 'deve ser possível buscar por uf do endereço' do
+      create :municipe, endereco: build(:endereco, uf: 'BA')
+      create :municipe, endereco: build(:endereco, uf: 'RJ')
+      expect(Municipe.search('ba').count).to be >= 1
+    end
+
+    it 'deve ser possível filtrar por status' do
+      create_list(:municipe, 2, ativo: true)
+      create_list(:municipe, 3, ativo: false)
+      # debugger
+      expect(Municipe.search(nil, 'ativos').count).to eq(2)
+      expect(Municipe.search(nil, 'inativos').count).to eq(3)
+    end
+  end
 end
