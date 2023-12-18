@@ -3,7 +3,7 @@ class MunicipesController < ApplicationController
 
   # GET /municipes or /municipes.json
   def index
-    @municipes = Municipe.search(params[:query]).with_attached_foto
+    @municipes = Municipe.search(params[:query], params[:ativos]).with_attached_foto
   end
 
   # GET /municipes/new

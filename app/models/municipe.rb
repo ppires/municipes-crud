@@ -19,19 +19,30 @@ class Municipe < ApplicationRecord
   validates :ativo, inclusion: [true, false]
   validates :foto, presence: true
 
+  scope :ativos, -> { where(ativo: true) }
+  scope :inativos, -> { where(ativo: false) }
+
   def self.searchable_attributes
     column_names.map(&:to_sym).reject do |column|
       [:id, :ativo, :created_at, :updated_at, :data_nascimento].include?(column)
     end
   end
 
-  def self.search(query)
-    return includes(:endereco) if query.blank?
+  def self.search(query, ativos_param)
+    search_result = filter_ativos_search(ativos_param)
+    return search_result.includes(:endereco) if query.blank?
 
     municipe_conditions = searchable_attributes.map { |attribute| "#{attribute} ILIKE :query" }
     endereco_conditions = Endereco.searchable_attributes.map { |attribute| "enderecos.#{attribute} ILIKE :query" }
     conditions = municipe_conditions.concat(endereco_conditions).join(' OR ')
-    Municipe.joins(:endereco).includes(:endereco).where(conditions, query: "%#{query.strip}%")
+    search_result.joins(:endereco).includes(:endereco).where(conditions, query: "%#{query.strip}%")
+  end
+
+  def self.filter_ativos_search(param)
+    return ativos if param == 'ativos'
+    return inativos if param == 'inativos'
+
+    unscoped
   end
 
   def formatted_cpf
